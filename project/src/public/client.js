@@ -19,12 +19,14 @@ const render = async (root, state) => {
 
 // create content
 const App = (state) => {
-    let { rovers, apod } = state
+    let { rovers, apod, roverData } = state
+    console.log("state rovers is ", state)
 
     return `
         <header></header>
         <main>
             ${Greeting(store.user.name)}
+            ${SelectRovers(rovers)}
             <section>
                 <h3>Put things on the page!</h3>
                 <p>Here is an example section.</p>
@@ -37,6 +39,7 @@ const App = (state) => {
                     but generally help with discoverability of relevant imagery.
                 </p>
                 ${ImageOfTheDay(apod)}
+                ${displayRoversAndImageSlicer(roverData)}
             </section>
         </main>
         <footer></footer>
@@ -62,7 +65,28 @@ const Greeting = (name) => {
         <h1>Hello!</h1>
     `
 }
+const displayRoversAndImageSlicer = (roverData) => {
+    if(!roverData){
+        return
+    }
+    else{
+        return roverData.photos.map(photo => photo.img_src) 
 
+    }
+}
+// display selection box for rovers
+
+const SelectRovers = (rovers) => {
+    let roverSelect = rovers.map(rover => `<option value=${rover} > ${rover} </option>`)
+    return `
+        <select id="mySelect" onchange="myFunction()">${roverSelect}</select>
+    `
+}
+function myFunction() {
+    let x = document.getElementById("mySelect").value;
+    getRoverDetails(x)
+    alert(x)
+}
 // Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
 
@@ -73,9 +97,10 @@ const ImageOfTheDay = (apod) => {
 
     console.log(photodate.getDate() === today.getDate());
     if (!apod || apod.date === today.getDate() ) {
+        console.log("looking for apod")
         getImageOfTheDay(store)
     }
-
+    console.log( "image of the day type ", apod)
     // check if the photo of the day is actually type video!
     if (apod.media_type === "video") {
         return (`
@@ -94,12 +119,38 @@ const ImageOfTheDay = (apod) => {
 // ------------------------------------------------------  API CALLS
 
 // Example API call
-const getImageOfTheDay = (state) => {
+const getImageOfTheDay = async (state) => {
     let { apod } = state
 
-    fetch(`http://localhost:3000/apod`)
+    let data = await fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
-        .then(apod => updateStore(store, { apod }))
+        .then(apod => {
+            console.log( apod)
+            updateStore(store, { apod })
+    })
+
+    return data
+}
+
+const getRoverDetails = (rover) => {
+    let body = { rover: rover }
+   let data =  fetch(`http://localhost:3000/rover`, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(body)
+    })
+        .then(res => res.json())
+        .then(roversdata => {
+            updateStore(store, { roverData : roversdata.rovers })
+        })
 
     return data
 }
