@@ -135,3 +135,69 @@ img {
 .demo:hover {
   opacity: 1;
 }
+
+
+
+/* galaxy */
+
+
+@-webkit-keyframes STAR-MOVE {
+	from {
+		left: 0;
+		top: 0;
+	}
+	to { 
+		left: -10000px;
+		top: -2000px;
+	}
+}
+
+#background {
+	background: black url(../images/background.png) repeat ;
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2;
+
+	
+	-webkit-animation-name: STAR-MOVE;
+	-webkit-animation-duration: 200s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#midground {
+	background: url(../images/midground.png) repeat;
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: 5;
+	
+	-webkit-animation-name: STAR-MOVE;
+	-webkit-animation-duration: 150s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#foreground {
+	background: url(../images/foreground.png) repeat;
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: 10;
+	
+	-webkit-animation-name: STAR-MOVE;
+	-webkit-animation-duration: 100s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+}
+select {
+  z-index: 300;
+}
+
+.page-wrap {
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	z-index: 300;
+	background: rgba(0,0,0,0.7);
+	overflow: hidden;
+	padding: 30px 50px;
+}

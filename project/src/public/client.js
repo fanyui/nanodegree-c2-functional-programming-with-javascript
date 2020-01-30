@@ -1,7 +1,10 @@
+// import { List } from 'immutable'
+// const { List } = require('immutable');
+
 let store = {
     user: { name: "Student" },
     apod: '',
-    rovers: ['Curiosity', 'Opportunity', 'Spirit'],
+    rovers: Immutable.List(['Curiosity', 'Opportunity', 'Spirit']),
 }
 let slideIndex = 1;
 
@@ -25,10 +28,15 @@ const App = (state) => {
     return `
         <header></header>
         <main>
+    <div id="background"></div>
+    <div id="midground"></div>
+    <div id="foreground"></div>
+    <div class="page-wrap">
             ${SelectRovers(rovers)}
                 <section class="slider-container">
                 ${displayRoversAndImageSlicer(roverData)}
                 </section>
+    </div>
         </main>
         <footer></footer>
     `
@@ -49,7 +57,13 @@ const displayRoversAndImageSlicer = (roverData) => {
     else{
         
         let pht = roverData.photos.map((photo, key, array) => `<div class="mySlides">
-        <div class="numbertext"> ${key+1} / ${array.length}</div>
+        <div class="numbertext"> ${key+1} / ${array.length} <br />
+            <label>Rover Name: ${photo.rover.name} <lable> <br/>
+            <label>Launch Date: ${photo.rover.launch_date} <lable> <br/>
+            <label>Landing Date: ${photo.rover.landing_date} <lable> <br/>
+            <label>Status: ${photo.rover.status} <lable> <br/>
+            <label>Total photos: ${photo.rover.total_photos} <lable> <br/>
+        </div>
         <img class="slider-image" src=${photo.img_src} >
         </div>`)
         
@@ -105,7 +119,11 @@ const getRoverDetails = (rover) => {
     })
         .then(res => res.json())
         .then(roversdata => {
-            updateStore(store, { roverData : roversdata.rovers })
+            const {rovers} = store
+            let rover = roversdata.rovers.photos[0].rover.name
+           let index = rovers.indexOf(rover)
+           let newRovers = rovers.splice(index,1)
+            updateStore(store, { rovers: newRovers.unshift(rover), roverData: roversdata.rovers })
         })
 
     return data
