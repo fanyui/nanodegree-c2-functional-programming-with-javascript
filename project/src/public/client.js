@@ -33,15 +33,15 @@ const App = (state) => {
     return `
         <header></header>
         <main>
-    <div id="background"></div>
-    <div id="midground"></div>
-    <div id="foreground"></div>
-    <div class="page-wrap">
-            ${SelectRovers(rovers)}
+            <div id="background"></div>
+            <div id="midground"></div>
+            <div id="foreground"></div>
+            <div class="page-wrap">
+                ${SelectRovers(rovers)}
                 <section class="slider-container">
-                ${displayRoversAndImageSlicer(roverData)}
+                    ${displayRoversAndImageSlicer(roverData)}
                 </section>
-    </div>
+            </div>
         </main>
         <footer></footer>
     `
@@ -60,7 +60,6 @@ const displayRoversAndImageSlicer = (roverData) => {
         return "";
     }
     else{
-        
         let pht = roverData.photos.map((photo, key, array) => `<div class="mySlides">
         <div class="numbertext"> ${key+1} / ${array.length} <br />
             <label>Rover Name: ${photo.rover.name} <lable> <br/>
@@ -78,13 +77,13 @@ const displayRoversAndImageSlicer = (roverData) => {
         )
         
         return `<div id="innital-render" class="container"> ${pht.join('')}  
-        <a class="prev" onclick="plusSlides(-1)">❮</a>
-        <a class="next" onclick="plusSlides(1)">❯</a>
-        <div class="caption-container">
-        <p id="caption"></p>
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+            <div class="caption-container">
+            <p id="caption"></p>
         </div>
         <div class="row">
-        ${thumbnail.join('')}
+            ${thumbnail.join('')}
         </div>
 
         </div>`
@@ -104,6 +103,7 @@ const SelectRovers = (rovers) => {
 function myFunction() {
     let x = document.getElementById("mySelect").value;
     getRoverDetails(x)
+    return x;
 }
 
 

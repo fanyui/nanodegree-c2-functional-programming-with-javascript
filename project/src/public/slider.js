@@ -1,6 +1,7 @@
 //showSlides(slideIndex);
 let slideIndex = 1;
 
+//impure function for updating the value of slide index
 function plusSlides(n) {
     showSlides(slideIndex += n);
 }
