@@ -19,16 +19,45 @@ main {
 footer {
   /* footer styles */
 }
-
+  /* use desktop */
+  .slider-container {
+    margin-left: 0px;
+    margin-right: 0px
+  }
+  .slider-image {
+    width: 100%;
+    height: 250px;
+  }
+  .page-wrap {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 300;
+    overflow: hidden;
+  }
+  .select-field {
+    background-color: white;
+  }
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
-  /* use mobile */
+    .slider-image {
+    width: 100%;
+    height: 400px;
+  }
+  .page-wrap {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 300;
+    overflow: hidden;
+    padding: 5px 5px;
+  }
 }
 
 /* -------------------  DESKTOP  -------------------- */
 
 @media (min-width: 1224px) {
-  /* use mobile */
+  /* use desktop */
   .slider-container {
     margin-left: 200px;
     margin-right: 200px
@@ -37,12 +66,28 @@ footer {
     width: 100%;
     height: 500px;
   }
+  .page-wrap {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 300;
+    overflow: hidden;
+    padding: 30px 50px;
+  }
 }
 
 /* -------------------  LARGE SCREENS  -------------- */
 
 @media (min-width: 1824px) {
-  /* use mobile */
+  /* use larger screens */
+  .page-wrap {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 300;
+    overflow: hidden;
+    padding: 30px 50px;
+  }
 }
 
 * {
@@ -192,12 +237,3 @@ select {
   z-index: 300;
 }
 
-.page-wrap {
-	width: 100%;
-	margin: 0 auto;
-	position: relative;
-	z-index: 300;
-	background: rgba(0,0,0,0.7);
-	overflow: hidden;
-	padding: 30px 50px;
-}
