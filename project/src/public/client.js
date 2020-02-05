@@ -37,7 +37,7 @@ const App = (state) => {
             <div id="midground"></div>
             <div id="foreground"></div>
             <div class="page-wrap">
-                ${SelectRovers(rovers)}
+                ${renderRovers(rovers)}
                 <section class="slider-container">
                     ${displayRoversAndImageSlicer(roverData)}
                 </section>
@@ -59,6 +59,9 @@ const displayRoversAndImageSlicer = (roverData) => {
     if(!roverData){
         return "";
     }
+    else if(roverData && roverData.photos.length==0){
+        return `<div class="numbertext"> No images for this rover on sole 2540 please choose another rover </div>`;
+    }
     else{
         let pht = roverData.photos.map((photo, key, array) => `<div class="mySlides">
         <div class="numbertext"> ${key+1} / ${array.length} <br />
@@ -66,6 +69,7 @@ const displayRoversAndImageSlicer = (roverData) => {
             <label>Launch Date: ${photo.rover.launch_date} <lable> <br/>
             <label>Landing Date: ${photo.rover.landing_date} <lable> <br/>
             <label>Status: ${photo.rover.status} <lable> <br/>
+            <label>Date Taken: ${photo.rover.max_date} <lable> <br/>
             <label>Total photos: ${photo.rover.total_photos} <lable> <br/>
         </div>
         <img class="slider-image" src=${photo.img_src} >
@@ -94,16 +98,19 @@ const displayRoversAndImageSlicer = (roverData) => {
 
 // display selection box for rovers to choose the options of rover they want to see.
 
-const SelectRovers = (rovers) => {
+const renderRovers = (rovers) => {
     let roverSelect = rovers.map(rover => `<option value=${rover} > ${rover} </option>`)
     return `
-        <select id="mySelect" class="select-field" onchange="myFunction()">${roverSelect}</select>
+        <select class="select-field" onChange="selectRover(event)"  >${roverSelect}</select>
     `
 }
-function myFunction() {
-    let x = document.getElementById("mySelect").value;
-    getRoverDetails(x)
-    return x;
+function selectRover(e) {
+    let selectedRover = e.target.value
+    if (!selectedRover) {
+        return
+    }
+    getRoverDetails(selectedRover)
+
 }
 
 
@@ -130,7 +137,8 @@ const getRoverDetails = (rover) => {
         box and because the render function runs and things refresh. we have to reorder
         them here.
         */
-            let rover = roversdata.rovers.photos[0].rover.name //get the name of the rover
+            // let rover = roversdata.rovers.photos[0].rover.name //get the name of the rover
+            let rover = body.rover //get the name of the rover
            let index = rovers.indexOf(rover)
            let newRovers = rovers.splice(index,1)
             updateStore(store, { rovers: newRovers.unshift(rover), roverData: roversdata.rovers })

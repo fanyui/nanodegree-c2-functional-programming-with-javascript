@@ -26,10 +26,13 @@ app.get('/apod', async (req, res) => {
 })
 //  API call for the rovers
 app.post('/rover', async (req, res) => {
+    //Highest sol value is 2540 which is equivalent ot earth date February 18, 
+    // 2021 date schedule for arrival of Mars 2020 rover
     console.log('received ', req.body.rover)
     let rover = req.body.rover
     try {
-        let rovers = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/photos?sol=1000&api_key=${process.env.API_KEY}`)
+    //Highest sol value is 2540 which is equivalent ot earth date February 18, 2021 date schedule for arrival of Mars 2020 rover
+        let rovers = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/photos?sol=2540&api_key=${process.env.API_KEY}`)
             .then(res => res.json())
         res.send({ rovers })
     } catch (err) {
