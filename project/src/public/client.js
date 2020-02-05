@@ -37,9 +37,9 @@ const App = (state) => {
             <div id="midground"></div>
             <div id="foreground"></div>
             <div class="page-wrap">
-                ${renderRovers(rovers)}
+                ${renderRovers(rovers, Options)}
                 <section class="slider-container">
-                    ${displayRoversAndImageSlicer(roverData)}
+                    ${displayRoversAndImageSlicer(roverData, thumbnailImages)}
                 </section>
             </div>
         </main>
@@ -53,9 +53,11 @@ window.addEventListener('load', () => {
 
 // ------------------------------------------------------  COMPONENTS
 
-
+const thumbnailImages = (elt, id) => `<div class="column">
+        <img class="demo cursor " src=${elt.img_src} style="width:100%" onclick="currentSlide(${id + 1})" alt=${elt.camera.full_name}>
+        </div>`
 // this function takes in an array of images and returns the specified data expected as well as the slider for displaying theimages
-const displayRoversAndImageSlicer = (roverData) => {
+const displayRoversAndImageSlicer = (roverData, thumbnailImages) => {
     if(!roverData){
         return "";
     }
@@ -75,10 +77,7 @@ const displayRoversAndImageSlicer = (roverData) => {
         <img class="slider-image" src=${photo.img_src} >
         </div>`)
         
-        let thumbnail = roverData.photos.map((elt, id) => `<div class="column">
-        <img class="demo cursor " src=${elt.img_src} style="width:100%" onclick="currentSlide(${id+1})" alt=${elt.camera.full_name}>
-        </div>`
-        )
+        let thumbnail = roverData.photos.map((elt, id) => thumbnailImages(elt, id))
         
         return `<div id="innital-render" class="container"> ${pht.join('')}  
             <a class="prev" onclick="plusSlides(-1)">❮</a>
@@ -97,9 +96,9 @@ const displayRoversAndImageSlicer = (roverData) => {
 
 
 // display selection box for rovers to choose the options of rover they want to see.
-
-const renderRovers = (rovers) => {
-    let roverSelect = rovers.map(rover => `<option value=${rover} > ${rover} </option>`)
+const Options = (rover) => `<option value=${rover} > ${rover} </option>`
+const renderRovers = (rovers, Option) => {
+    let roverSelect = rovers.map(rover => Option( rover))
     return `
         <select class="select-field" onChange="selectRover(event)"  >${roverSelect}</select>
     `
